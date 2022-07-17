@@ -1,8 +1,8 @@
 import React from 'react';
-import './App.css';
+import styles from './main.module.scss';
 
-function App() {
+const App = () => {
   return <div className="App">Test sss</div>;
-}
+};
 
 export default App;
