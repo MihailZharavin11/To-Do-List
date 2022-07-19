@@ -1,9 +1,7 @@
 .taskWrapper {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
   margin-top: 36px;
   padding: 5px;
+  cursor: pointer;
   .topTask {
     display: flex;
     justify-content: space-between;

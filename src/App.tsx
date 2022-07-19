@@ -4,6 +4,7 @@ import Form from './components/form/Form';
 import TaskItems, { TTaskItems } from './components/taskItems/TaskItems';
 import styles from './main.module.scss';
 import { v4 as uuidv4 } from 'uuid';
+import { Reorder } from 'framer-motion';
 
 export type TItems = {
   id: string;
@@ -51,20 +52,24 @@ const App = () => {
         <div className={styles.appContent}>
           <h1 className={styles.title}>My Tasks</h1>
           <Form addTask={addTask} />
-          {items.map((element) => {
-            return (
-              <TaskItems
-                key={element.id}
-                id={element.id}
-                title={element.title}
-                description={element.description}
-                completed={element.completed}
-                deleteItem={deleteItem}
-                changeValue={changeValue}
-                completedTask={completedTask}
-              />
-            );
-          })}
+          <Reorder.Group axis="y" values={items} onReorder={setItems}>
+            {items.map((element) => {
+              return (
+                <Reorder.Item key={element.title} value={element}>
+                  <TaskItems
+                    key={element.id}
+                    id={element.id}
+                    title={element.title}
+                    description={element.description}
+                    completed={element.completed}
+                    deleteItem={deleteItem}
+                    changeValue={changeValue}
+                    completedTask={completedTask}
+                  />
+                </Reorder.Item>
+              );
+            })}
+          </Reorder.Group>
         </div>
       </div>
     </div>
