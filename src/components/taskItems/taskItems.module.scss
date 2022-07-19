@@ -18,18 +18,29 @@
         font-weight: 400;
         font-size: 18px;
         line-height: 29px;
-        text-decoration-line: line-through;
-        color: #c4c4c4;
-        margin-left: 21px;
+        color: #3e3b3b;
+        margin-left: 24px;
       }
     }
   }
+
   .bottomTask {
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
     line-height: 23px;
-    text-decoration-line: line-through;
-    color: #c4c4c4;
+    color: #3e3b3b;
+    p {
+      margin-top: 5px;
+    }
+  }
+}
+
+.taskInput {
+  background: inherit;
+  border: none;
+  border-bottom: 1px solid #c4c4c4;
+  &:focus {
+    outline: none;
   }
 }

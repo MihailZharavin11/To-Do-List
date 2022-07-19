@@ -9,6 +9,7 @@ export type TItems = {
   id: string;
   title: string;
   description: string;
+  completed: boolean;
 };
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
       id: uuidv4(),
       title,
       description,
+      completed: false,
     };
     setItems([...items, taskItem]);
   };
@@ -29,20 +31,16 @@ const App = () => {
   };
 
   const changeValue = (id: string, newTitle: string, newDescription: string) => {
-    const newChangedItem: TItems = {
-      id,
-      title: newTitle,
-      description: newDescription,
-    };
-    const newArray = items.map((element) => {
-      if (
-        (element.id === id && element.title !== newTitle) ||
-        (element.id === id && element.description !== newDescription)
-      ) {
-        return newChangedItem;
-      }
-      return element;
-    });
+    const newArray = items.map((element) =>
+      element.id === id ? { ...element, title: newTitle, description: newDescription } : element,
+    );
+    setItems(newArray);
+  };
+
+  const completedTask = (id: string) => {
+    const newArray = items.map((element) =>
+      element.id === id ? { ...element, completed: !element.completed } : element,
+    );
     setItems(newArray);
   };
 
@@ -60,8 +58,10 @@ const App = () => {
                 id={element.id}
                 title={element.title}
                 description={element.description}
+                completed={element.completed}
                 deleteItem={deleteItem}
                 changeValue={changeValue}
+                completedTask={completedTask}
               />
             );
           })}

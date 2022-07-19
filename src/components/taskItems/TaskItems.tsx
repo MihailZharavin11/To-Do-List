@@ -7,12 +7,27 @@ export type TTaskItems = {
   description: string;
   deleteItem: (id: string) => void;
   changeValue: (id: string, newTitle: string, newDescription: string) => void;
+  completed: boolean;
+  completedTask: (id: string) => void;
 };
 
-const TaskItems: React.FC<TTaskItems> = ({ id, title, description, deleteItem, changeValue }) => {
+const TaskItems: React.FC<TTaskItems> = ({
+  id,
+  title,
+  description,
+  deleteItem,
+  changeValue,
+  completed,
+  completedTask,
+}) => {
   const [toogleDescription, setToogleDescription] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
   const [newDescription, setNewDescription] = useState(description);
+
+  const completedStyles = {
+    textDecorationLine: 'line-through',
+    color: '#c4c4c4',
+  };
 
   return (
     <div className={styles.taskWrapper}>
@@ -23,17 +38,24 @@ const TaskItems: React.FC<TTaskItems> = ({ id, title, description, deleteItem, c
             width="30"
             height="30"
             fill="currentColor"
+            onClick={() => completedTask(id)}
             style={{
               cursor: 'pointer',
+              color: completed ? 'green' : 'grey',
             }}
             className="bi bi-check2-circle"
             viewBox="0 0 16 16">
             <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z" />
             <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z" />
           </svg>
-          <h2>
+          <h2 style={completed ? completedStyles : undefined}>
             {toogleDescription ? (
-              <input onChange={(e) => setNewTitle(e.target.value)} value={newTitle} type="text" />
+              <input
+                className={styles.taskInput}
+                onChange={(e) => setNewTitle(e.target.value)}
+                value={newTitle}
+                type="text"
+              />
             ) : (
               title
             )}
@@ -43,7 +65,7 @@ const TaskItems: React.FC<TTaskItems> = ({ id, title, description, deleteItem, c
           <svg
             onClick={() => {
               setToogleDescription(!toogleDescription);
-              if (toogleDescription) {
+              if (toogleDescription && (newTitle !== title || newDescription !== description)) {
                 changeValue(id, newTitle, newDescription);
               }
             }}
@@ -84,12 +106,13 @@ const TaskItems: React.FC<TTaskItems> = ({ id, title, description, deleteItem, c
         <div className="desctiptionTask">
           {toogleDescription ? (
             <input
+              className={styles.taskInput}
               onChange={(e) => setNewDescription(e.target.value)}
               value={newDescription}
               type="text"
             />
           ) : (
-            description
+            <p style={completed ? completedStyles : undefined}>{description}</p>
           )}
         </div>
       </div>
