@@ -1,0 +1,35 @@
+.taskWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 36px;
+  padding: 5px;
+  .topTask {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid #3e3b3b;
+    box-shadow: 0px 4px 4px #c8e3ec;
+    .topLeftSideTask {
+      display: flex;
+      align-items: center;
+      font-size: 30px;
+      h2 {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 29px;
+        text-decoration-line: line-through;
+        color: #c4c4c4;
+        margin-left: 21px;
+      }
+    }
+  }
+  .bottomTask {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 23px;
+    text-decoration-line: line-through;
+    color: #c4c4c4;
+  }
+}

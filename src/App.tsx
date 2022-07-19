@@ -1,96 +1,70 @@
 import React, { useState } from 'react';
+import Cloud from './components/bgCloud/Cloud';
+import Form from './components/form/Form';
+import TaskItems, { TTaskItems } from './components/taskItems/TaskItems';
 import styles from './main.module.scss';
+import { v4 as uuidv4 } from 'uuid';
+
+export type TItems = {
+  id: string;
+  title: string;
+  description: string;
+};
 
 const App = () => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [items, setItems] = useState<TItems[] | []>([]);
+
+  const addTask = (title: string, description: string): void => {
+    const taskItem: TItems = {
+      id: uuidv4(),
+      title,
+      description,
+    };
+    setItems([...items, taskItem]);
+  };
+
+  const deleteItem = (id: string) => {
+    const newArrayItem = items.filter((element) => element.id !== id);
+    setItems(newArrayItem);
+  };
+
+  const changeValue = (id: string, newTitle: string, newDescription: string) => {
+    const newChangedItem: TItems = {
+      id,
+      title: newTitle,
+      description: newDescription,
+    };
+    const newArray = items.map((element) => {
+      if (
+        (element.id === id && element.title !== newTitle) ||
+        (element.id === id && element.description !== newDescription)
+      ) {
+        return newChangedItem;
+      }
+      return element;
+    });
+    setItems(newArray);
+  };
 
   return (
     <div className={styles.App}>
-      <div className={styles.circle}></div>
-      <div className={styles.circleTwo}></div>
-      <div className={styles.circleThree}></div>
-      <div className={styles.circleFour}></div>
+      <Cloud />
       <div className={styles.appContainer}>
         <div className={styles.appContent}>
           <h1 className={styles.title}>My Tasks</h1>
-          <input
-            className={styles.inputItemsTitle}
-            type="text"
-            name="title"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
-          />
-          <input
-            className={styles.inputItemsDescription}
-            type="text"
-            name="title"
-            placeholder="Description"
-            value={description}
-            onChange={(e) => {
-              setDescription(e.target.value);
-            }}
-          />
-          <button className={styles.button}>Add</button>
-          <div className={styles.taskWrapper}>
-            <div className={styles.topTask}>
-              <div className={styles.topLeftSideTask}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="30"
-                  height="30"
-                  fill="currentColor"
-                  style={{
-                    cursor: 'pointer',
-                  }}
-                  className="bi bi-check2-circle"
-                  viewBox="0 0 16 16">
-                  <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z" />
-                  <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z" />
-                </svg>
-                <h2>Task #1</h2>
-              </div>
-              <div className="topRigthSideTask">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="30"
-                  height="30"
-                  fill="currentColor"
-                  style={{
-                    color: 'green',
-                    cursor: 'pointer',
-                  }}
-                  className="bi bi-pencil"
-                  viewBox="0 0 16 16">
-                  <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                </svg>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="30"
-                  height="30"
-                  fill="currentColor"
-                  style={{
-                    color: 'red',
-                    cursor: 'pointer',
-                    margin: '0px 34px',
-                  }}
-                  className="bi bi-trash"
-                  viewBox="0 0 16 16">
-                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                  <path
-                    fill-rule="evenodd"
-                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-                  />
-                </svg>
-              </div>
-            </div>
-            <div className={styles.bottomTask}>
-              <div className="desctiptionTask">Task #2 Description:</div>
-            </div>
-          </div>
+          <Form addTask={addTask} />
+          {items.map((element) => {
+            return (
+              <TaskItems
+                key={element.id}
+                id={element.id}
+                title={element.title}
+                description={element.description}
+                deleteItem={deleteItem}
+                changeValue={changeValue}
+              />
+            );
+          })}
         </div>
       </div>
     </div>

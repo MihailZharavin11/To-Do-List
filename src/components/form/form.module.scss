@@ -1,0 +1,53 @@
+.inputItemsTitle {
+  background: #a8d2a5;
+  width: 816px;
+  padding: 6px 29px;
+  border: none;
+  border: 1px solid transparent;
+  margin-top: 43px;
+  ::placeholder {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 29px;
+    color: #3e3b3b;
+  }
+  &:hover {
+    border: 1px solid black;
+  }
+}
+
+.inputItemsDescription {
+  background: #a8d2a5;
+  width: 816px;
+  padding: 6px 29px;
+  border: none;
+  margin-top: 26px;
+  border: 1px solid transparent;
+  ::placeholder {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 29px;
+    color: #3e3b3b;
+  }
+  &:hover {
+    border: 1px solid black;
+  }
+}
+
+.button {
+  background: linear-gradient(90deg, #a8d2a5 0%, #acd4e1 115.2%);
+  box-shadow: 0px 4px 4px #acd4e1;
+  border-radius: 25px;
+  padding: 16px 122px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 29px;
+  color: #3e3b3b;
+  margin-top: 21px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  &:hover {
+    border: 1px solid black;
+  }
+}
