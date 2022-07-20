@@ -74,14 +74,7 @@ const App = () => {
       <div className={styles.appContainer}>
         <div className={styles.appContent}>
           <h1 className={styles.title}>My Tasks</h1>
-          {error ? (
-            <h2
-              style={{
-                color: 'red',
-              }}>
-              {error}
-            </h2>
-          ) : null}
+          {error ? <h2 className={styles.errorAdded}>{error}</h2> : null}
           <Form setError={setError} setInputError={setInputError} addTask={addTask} />
 
           <Reorder.Group axis="y" values={items} onReorder={setItems}>
@@ -104,12 +97,7 @@ const App = () => {
               );
             })}
           </Reorder.Group>
-          <div
-            style={{
-              height: '100px',
-              width: '100px',
-            }}
-            className="progress__bar">
+          <div className={styles.progressBar}>
             {items.length > 0 ? (
               <CircularProgressbar value={valueCompleted} text={`${valueCompleted.toFixed(1)}%`} />
             ) : null}

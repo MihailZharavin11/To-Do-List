@@ -26,6 +26,15 @@
     letter-spacing: 0.25em;
     color: #000000;
   }
+
+  .progressBar {
+    height: 150px;
+    width: 150px;
+  }
+}
+
+.errorAdded {
+  color: red;
 }
 
 @media (max-width: 992px) {

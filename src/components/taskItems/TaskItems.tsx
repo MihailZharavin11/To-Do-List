@@ -33,6 +33,18 @@ const TaskItems: React.FC<TTaskItems> = ({
     color: '#c4c4c4',
   };
 
+  const editItem = () => {
+    setToogleDescription(!toogleDescription);
+    if (toogleDescription && (newTitle !== title || newDescription !== description)) {
+      if (!newTitle || !newDescription) {
+        setInputError('Все поля должны быть заполнены!');
+      } else {
+        setInputError('');
+        changeValue(id, newTitle, newDescription);
+      }
+    }
+  };
+
   return (
     <div className={styles.taskWrapper}>
       <div className={styles.topTask}>
@@ -68,17 +80,7 @@ const TaskItems: React.FC<TTaskItems> = ({
         </div>
         <div className="topRigthSideTask">
           <svg
-            onClick={() => {
-              setToogleDescription(!toogleDescription);
-              if (toogleDescription && (newTitle !== title || newDescription !== description)) {
-                if (!newTitle || !newDescription) {
-                  setInputError('Все поля должны быть заполнены!');
-                } else {
-                  setInputError('');
-                  changeValue(id, newTitle, newDescription);
-                }
-              }
-            }}
+            onClick={editItem}
             xmlns="http://www.w3.org/2000/svg"
             width="30"
             height="30"
@@ -127,15 +129,7 @@ const TaskItems: React.FC<TTaskItems> = ({
           )}
         </div>
       </div>
-      {inputError ? (
-        <p
-          style={{
-            color: 'red',
-            textAlign: 'start',
-          }}>
-          {inputError}
-        </p>
-      ) : null}
+      {inputError ? <p className={styles.inputError}>{inputError}</p> : null}
     </div>
   );
 };
