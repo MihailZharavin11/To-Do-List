@@ -5,7 +5,8 @@ import TaskItems, { TTaskItems } from './components/taskItems/TaskItems';
 import styles from './main.module.scss';
 import { v4 as uuidv4 } from 'uuid';
 import { Reorder } from 'framer-motion';
-
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 export type TItems = {
   id: string;
   title: string;
@@ -15,6 +16,9 @@ export type TItems = {
 
 const App = () => {
   const [items, setItems] = useState<TItems[] | []>([]);
+  const [value, onChange] = useState(new Date());
+  const [completed, setCompleted] = useState(0);
+  const valueCompleted = completed ? (completed * 100) / items.length : 0;
 
   const addTask = (title: string, description: string): void => {
     const taskItem: TItems = {
@@ -39,9 +43,13 @@ const App = () => {
   };
 
   const completedTask = (id: string) => {
-    const newArray = items.map((element) =>
-      element.id === id ? { ...element, completed: !element.completed } : element,
-    );
+    const newArray = items.map((element) => {
+      if (element.id === id) {
+        element.completed === false ? setCompleted(completed + 1) : setCompleted(completed - 1);
+        return { ...element, completed: !element.completed };
+      }
+      return element;
+    });
     setItems(newArray);
   };
 
@@ -70,6 +78,14 @@ const App = () => {
               );
             })}
           </Reorder.Group>
+          <div
+            style={{
+              height: '100px',
+              width: '100px',
+            }}
+            className="progress__bar">
+            <CircularProgressbar value={valueCompleted} text={`${valueCompleted.toFixed(1)}%`} />
+          </div>
         </div>
       </div>
     </div>

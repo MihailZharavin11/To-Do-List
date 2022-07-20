@@ -13,4 +13,9 @@ declare module '*.scss' {
   export default content;
 }
 
+declare module 'react-calendar' {
+  const content: any;
+  export default content;
+}
+
 declare module 'react-dom/client';
