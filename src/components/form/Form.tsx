@@ -4,9 +4,11 @@ import TItems from '../../App';
 
 type FormProps = {
   addTask: (title: string, description: string) => void;
+  setInputError: (value: React.SetStateAction<string>) => void;
+  setError: (value: React.SetStateAction<string>) => void;
 };
 
-const Form: React.FC<FormProps> = ({ addTask }) => {
+const Form: React.FC<FormProps> = ({ addTask, setInputError, setError }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
@@ -26,6 +28,8 @@ const Form: React.FC<FormProps> = ({ addTask }) => {
         value={title}
         onChange={(e) => {
           setTitle(e.target.value);
+          setInputError('');
+          setError('');
         }}
       />
       <input
@@ -36,6 +40,8 @@ const Form: React.FC<FormProps> = ({ addTask }) => {
         value={description}
         onChange={(e) => {
           setDescription(e.target.value);
+          setInputError('');
+          setInputError('');
         }}
       />
       <button

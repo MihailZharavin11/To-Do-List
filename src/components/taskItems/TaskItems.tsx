@@ -9,6 +9,8 @@ export type TTaskItems = {
   changeValue: (id: string, newTitle: string, newDescription: string) => void;
   completed: boolean;
   completedTask: (id: string) => void;
+  inputError: string;
+  setInputError: (value: React.SetStateAction<string>) => void;
 };
 
 const TaskItems: React.FC<TTaskItems> = ({
@@ -19,6 +21,8 @@ const TaskItems: React.FC<TTaskItems> = ({
   changeValue,
   completed,
   completedTask,
+  inputError,
+  setInputError,
 }) => {
   const [toogleDescription, setToogleDescription] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
@@ -53,6 +57,7 @@ const TaskItems: React.FC<TTaskItems> = ({
               <input
                 className={styles.taskInput}
                 onChange={(e) => setNewTitle(e.target.value)}
+                defaultValue={newTitle}
                 value={newTitle}
                 type="text"
               />
@@ -66,7 +71,12 @@ const TaskItems: React.FC<TTaskItems> = ({
             onClick={() => {
               setToogleDescription(!toogleDescription);
               if (toogleDescription && (newTitle !== title || newDescription !== description)) {
-                changeValue(id, newTitle, newDescription);
+                if (!newTitle || !newDescription) {
+                  setInputError('Все поля должны быть заполнены!');
+                } else {
+                  setInputError('');
+                  changeValue(id, newTitle, newDescription);
+                }
               }
             }}
             xmlns="http://www.w3.org/2000/svg"
@@ -109,6 +119,7 @@ const TaskItems: React.FC<TTaskItems> = ({
               className={styles.taskInput}
               onChange={(e) => setNewDescription(e.target.value)}
               value={newDescription}
+              defaultValue={newDescription}
               type="text"
             />
           ) : (
@@ -116,6 +127,15 @@ const TaskItems: React.FC<TTaskItems> = ({
           )}
         </div>
       </div>
+      {inputError ? (
+        <p
+          style={{
+            color: 'red',
+            textAlign: 'start',
+          }}>
+          {inputError}
+        </p>
+      ) : null}
     </div>
   );
 };

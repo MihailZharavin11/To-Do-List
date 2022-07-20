@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Cloud from './components/bgCloud/Cloud';
 import Form from './components/form/Form';
 import TaskItems, { TTaskItems } from './components/taskItems/TaskItems';
@@ -16,22 +16,37 @@ export type TItems = {
 
 const App = () => {
   const [items, setItems] = useState<TItems[] | []>([]);
-  const [value, onChange] = useState(new Date());
   const [completed, setCompleted] = useState(0);
-  const valueCompleted = completed ? (completed * 100) / items.length : 0;
+  const [error, setError] = useState('');
+  const [inputError, setInputError] = useState('');
+
+  let valueCompleted = completed ? (completed * 100) / items.length : 0;
 
   const addTask = (title: string, description: string): void => {
-    const taskItem: TItems = {
-      id: uuidv4(),
-      title,
-      description,
-      completed: false,
-    };
-    setItems([...items, taskItem]);
+    if (!title || !description) {
+      setError('Заполните все поля!');
+    } else {
+      setError('');
+      const taskItem: TItems = {
+        id: uuidv4(),
+        title,
+        description,
+        completed: false,
+      };
+      setItems([...items, taskItem]);
+    }
   };
 
   const deleteItem = (id: string) => {
-    const newArrayItem = items.filter((element) => element.id !== id);
+    const newArrayItem = items.filter((element) => {
+      if (element.id !== id) return true;
+
+      if (element.completed === true) {
+        setCompleted(completed - 1);
+      }
+      return false;
+    });
+
     setItems(newArrayItem);
   };
 
@@ -59,7 +74,16 @@ const App = () => {
       <div className={styles.appContainer}>
         <div className={styles.appContent}>
           <h1 className={styles.title}>My Tasks</h1>
-          <Form addTask={addTask} />
+          {error ? (
+            <h2
+              style={{
+                color: 'red',
+              }}>
+              {error}
+            </h2>
+          ) : null}
+          <Form setError={setError} setInputError={setInputError} addTask={addTask} />
+
           <Reorder.Group axis="y" values={items} onReorder={setItems}>
             {items.map((element) => {
               return (
@@ -73,6 +97,8 @@ const App = () => {
                     deleteItem={deleteItem}
                     changeValue={changeValue}
                     completedTask={completedTask}
+                    inputError={inputError}
+                    setInputError={setInputError}
                   />
                 </Reorder.Item>
               );
@@ -84,7 +110,9 @@ const App = () => {
               width: '100px',
             }}
             className="progress__bar">
-            <CircularProgressbar value={valueCompleted} text={`${valueCompleted.toFixed(1)}%`} />
+            {items.length > 0 ? (
+              <CircularProgressbar value={valueCompleted} text={`${valueCompleted.toFixed(1)}%`} />
+            ) : null}
           </div>
         </div>
       </div>

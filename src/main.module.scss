@@ -45,3 +45,11 @@
     max-width: 300px;
   }
 }
+
+@media (max-width: 576px) {
+  .title {
+    font-size: 38px;
+    color: #000000;
+    text-align: center;
+  }
+}
