@@ -22,11 +22,10 @@ const App = () => {
   const [completed, setCompleted] = useState(0);
   const [error, setError] = useState("");
   const [inputError, setInputError] = useState("");
-  console.log(items);
 
   let valueCompleted = completed ? (completed * 100) / items.length : 0;
 
-  const checkOnError = (title: string, description: string) => {
+  const checkOnError = (title: string, description: string, date?: Date) => {
     if (!title || !description) {
       setError("Заполните все поля!");
       return true;
@@ -43,12 +42,16 @@ const App = () => {
       setError("Строка не должна содержать специальные символы");
       return true;
     }
+    if (Number(date) < new Date().getTime()) {
+      setError("Выбранная дата не может быть меньше текущего времени");
+      return true;
+    }
     setError("");
     return false;
   };
 
   const addTask = (title: string, description: string, date?: Date): void => {
-    const err = checkOnError(title, description);
+    const err = checkOnError(title, description, date);
     if (!err) {
       const taskItem: TItems = {
         id: uuidv4(),
@@ -142,6 +145,7 @@ const App = () => {
                       completedTask={completedTask}
                       inputError={inputError}
                       setInputError={setInputError}
+                      date={element.date}
                     />
                   </Reorder.Item>
                 );

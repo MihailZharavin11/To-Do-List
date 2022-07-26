@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./taskItems.module.scss";
 import { motion } from "framer-motion";
 
@@ -12,6 +12,7 @@ export type TTaskItems = {
   completedTask: (id: string) => void;
   inputError: string;
   setInputError: (value: React.SetStateAction<string>) => void;
+  date?: Date;
 };
 
 const TaskItems: React.FC<TTaskItems> = ({
@@ -24,10 +25,43 @@ const TaskItems: React.FC<TTaskItems> = ({
   completedTask,
   inputError,
   setInputError,
+  date,
 }) => {
   const [toogleDescription, setToogleDescription] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
   const [newDescription, setNewDescription] = useState(description);
+  const [day, setDay] = useState(0);
+  const [hour, setHour] = useState(0);
+  const [minute, setMinute] = useState(0);
+  const [second, setSecond] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(false);
+
+  useEffect(() => {
+    if (completed) return;
+    let interval = setInterval(() => {
+      renderTimeLeft();
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [day, hour, minute, second, completed]);
+
+  const renderTimeLeft = () => {
+    if (date) {
+      const start = new Date();
+      let interval = date.getTime() - start.getTime();
+      if (interval > 0) {
+        interval = interval / 1000;
+        setDay(Math.round(interval / 60 / 60 / 24));
+        setHour(Math.round((interval / 60 / 60) % 24));
+        setMinute(Math.floor((interval / 60) % 60));
+        setSecond(Math.round(interval % 60));
+      } else {
+        setSecond(0);
+        setTimeLeft(true);
+      }
+    }
+  };
 
   const completedStyles = {
     textDecorationLine: "line-through",
@@ -51,6 +85,7 @@ const TaskItems: React.FC<TTaskItems> = ({
 
   return (
     <motion.div
+      whileHover={{ scale: 1.01 }}
       initial={{ x: -1000, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: 100, opacity: 0 }}
@@ -128,7 +163,7 @@ const TaskItems: React.FC<TTaskItems> = ({
         </div>
       </div>
       <div className={styles.bottomTask}>
-        <div className="desctiptionTask">
+        <div className={styles.descriptionTask}>
           {toogleDescription ? (
             <input
               className={styles.taskInput}
@@ -140,6 +175,13 @@ const TaskItems: React.FC<TTaskItems> = ({
           ) : (
             <p style={completed ? completedStyles : undefined}>{description}</p>
           )}
+          <p
+            className={`${completed && styles.completed} ${
+              timeLeft && styles.timeLeft
+            }`}
+          >
+            {date ? `${day}D${hour}h${minute}m${second}s` : null}
+          </p>
         </div>
       </div>
       {inputError ? <p className={styles.inputError}>{inputError}</p> : null}

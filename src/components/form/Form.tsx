@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./form.module.scss";
 import TItems from "../../App";
 import { AnimatePresence, motion } from "framer-motion";
@@ -21,7 +21,6 @@ const Form: React.FC<FormProps> = ({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [value, onChange] = useState<Date | undefined>(undefined);
-  const timeNow = new Date();
   const [showPicker, setShowPicker] = useState(false);
 
   const onClickButton = () => {

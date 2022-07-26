@@ -28,7 +28,10 @@
     font-size: 14px;
     line-height: 23px;
     color: #3e3b3b;
-    p {
+    .descriptionTask{
+      display: flex;
+      justify-content: space-between;
+      padding: 5px ;
       margin-top: 5px;
     }
   }
@@ -46,4 +49,13 @@
 .inputError {
   color: red;
   text-align: start;
+}
+
+.completed{
+  text-decoration-line: "line-through";
+  color: "#c4c4c4",
+}
+
+.timeLeft{
+  color:red;
 }
