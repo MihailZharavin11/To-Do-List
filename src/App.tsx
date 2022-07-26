@@ -13,6 +13,7 @@ export type TItems = {
   id: string;
   title: string;
   description: string;
+  date?: Date;
   completed: boolean;
 };
 
@@ -21,6 +22,7 @@ const App = () => {
   const [completed, setCompleted] = useState(0);
   const [error, setError] = useState("");
   const [inputError, setInputError] = useState("");
+  console.log(items);
 
   let valueCompleted = completed ? (completed * 100) / items.length : 0;
 
@@ -45,13 +47,14 @@ const App = () => {
     return false;
   };
 
-  const addTask = (title: string, description: string): void => {
+  const addTask = (title: string, description: string, date?: Date): void => {
     const err = checkOnError(title, description);
     if (!err) {
       const taskItem: TItems = {
         id: uuidv4(),
         title,
         description,
+        date,
         completed: false,
       };
       setItems([...items, taskItem]);
@@ -116,7 +119,6 @@ const App = () => {
               </motion.h2>
             )}
           </AnimatePresence>
-          {/* {error && <h2 className={styles.errorAdded}>{error}</h2>} */}
           <Form
             error={error}
             setError={setError}

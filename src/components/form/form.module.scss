@@ -1,5 +1,14 @@
+.formWrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  
+}
+
+
 .inputItemsTitle {
-  background: #a8d2a5;
+  background: linear-gradient(90deg, #a8d2a5 0%, #acd4e1 115.2%);
   width: 100%;
   padding: 6px 29px;
   border: none;
@@ -17,11 +26,12 @@
 }
 
 .inputItemsDescription {
-  background: #a8d2a5;
+  background: linear-gradient(90deg, #a8d2a5 0%, #acd4e1 115.2%);
   width: 100%;
   padding: 6px 29px;
   border: none;
   margin-top: 26px;
+  margin-bottom: 26px;
   border: 1px solid transparent;
   ::placeholder {
     font-weight: 400;
@@ -34,7 +44,14 @@
   }
 }
 
+.datePicker{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
 .button {
+  text-align: center;
   background: linear-gradient(90deg, #a8d2a5 0%, #acd4e1 115.2%);
   box-shadow: 0px 4px 4px #acd4e1;
   border-radius: 25px;
@@ -44,7 +61,7 @@
   font-size: 18px;
   line-height: 29px;
   color: #3e3b3b;
-  margin-top: 21px;
+  margin-top: 50px;
   border: 1px solid transparent;
   cursor: pointer;
   &:hover {
