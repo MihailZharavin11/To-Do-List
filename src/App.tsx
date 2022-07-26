@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import Cloud from './components/bgCloud/Cloud';
-import Form from './components/form/Form';
-import TaskItems, { TTaskItems } from './components/taskItems/TaskItems';
-import styles from './main.module.scss';
-import { v4 as uuidv4 } from 'uuid';
-import { Reorder } from 'framer-motion';
-import { CircularProgressbar } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
+import React, { useEffect, useState } from "react";
+import Cloud from "./components/bgCloud/Cloud";
+import Form from "./components/form/Form";
+import TaskItems, { TTaskItems } from "./components/taskItems/TaskItems";
+import styles from "./main.module.scss";
+import { v4 as uuidv4 } from "uuid";
+import { AnimatePresence, Reorder } from "framer-motion";
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import { motion } from "framer-motion";
+
 export type TItems = {
   id: string;
   title: string;
@@ -17,16 +19,35 @@ export type TItems = {
 const App = () => {
   const [items, setItems] = useState<TItems[] | []>([]);
   const [completed, setCompleted] = useState(0);
-  const [error, setError] = useState('');
-  const [inputError, setInputError] = useState('');
+  const [error, setError] = useState("");
+  const [inputError, setInputError] = useState("");
 
   let valueCompleted = completed ? (completed * 100) / items.length : 0;
 
-  const addTask = (title: string, description: string): void => {
+  const checkOnError = (title: string, description: string) => {
     if (!title || !description) {
-      setError('Заполните все поля!');
-    } else {
-      setError('');
+      setError("Заполните все поля!");
+      return true;
+    }
+    if (!isNaN(Number(title)) || !isNaN(Number(description))) {
+      setError("Поле не должно содержать только цифры");
+      return true;
+    }
+    if (!!!title.trim() || !!!description.trim()) {
+      setError("Поле не может состоять из пробелов");
+      return true;
+    }
+    if (!!!title.match("^[a-zA-Z0-9]+$")) {
+      setError("Строка не должна содержать специальные символы");
+      return true;
+    }
+    setError("");
+    return false;
+  };
+
+  const addTask = (title: string, description: string): void => {
+    const err = checkOnError(title, description);
+    if (!err) {
       const taskItem: TItems = {
         id: uuidv4(),
         title,
@@ -50,9 +71,15 @@ const App = () => {
     setItems(newArrayItem);
   };
 
-  const changeValue = (id: string, newTitle: string, newDescription: string) => {
+  const changeValue = (
+    id: string,
+    newTitle: string,
+    newDescription: string
+  ) => {
     const newArray = items.map((element) =>
-      element.id === id ? { ...element, title: newTitle, description: newDescription } : element,
+      element.id === id
+        ? { ...element, title: newTitle, description: newDescription }
+        : element
     );
     setItems(newArray);
   };
@@ -60,7 +87,9 @@ const App = () => {
   const completedTask = (id: string) => {
     const newArray = items.map((element) => {
       if (element.id === id) {
-        element.completed === false ? setCompleted(completed + 1) : setCompleted(completed - 1);
+        element.completed === false
+          ? setCompleted(completed + 1)
+          : setCompleted(completed - 1);
         return { ...element, completed: !element.completed };
       }
       return element;
@@ -70,38 +99,70 @@ const App = () => {
 
   return (
     <div className={styles.App}>
-      <Cloud />
       <div className={styles.appContainer}>
         <div className={styles.appContent}>
           <h1 className={styles.title}>My Tasks</h1>
-          {error ? <h2 className={styles.errorAdded}>{error}</h2> : null}
-          <Form setError={setError} setInputError={setInputError} addTask={addTask} />
+          <AnimatePresence>
+            {error && (
+              <motion.h2
+                key="error"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className={styles.errorAdded}
+              >
+                {error}
+              </motion.h2>
+            )}
+          </AnimatePresence>
+          {/* {error && <h2 className={styles.errorAdded}>{error}</h2>} */}
+          <Form
+            error={error}
+            setError={setError}
+            setInputError={setInputError}
+            addTask={addTask}
+          />
 
           <Reorder.Group axis="y" values={items} onReorder={setItems}>
-            {items.map((element) => {
-              return (
-                <Reorder.Item key={element.title} value={element}>
-                  <TaskItems
-                    key={element.id}
-                    id={element.id}
-                    title={element.title}
-                    description={element.description}
-                    completed={element.completed}
-                    deleteItem={deleteItem}
-                    changeValue={changeValue}
-                    completedTask={completedTask}
-                    inputError={inputError}
-                    setInputError={setInputError}
-                  />
-                </Reorder.Item>
-              );
-            })}
+            <AnimatePresence>
+              {items.map((element) => {
+                return (
+                  <Reorder.Item key={element.id} value={element}>
+                    <TaskItems
+                      key={element.id}
+                      id={element.id}
+                      title={element.title}
+                      description={element.description}
+                      completed={element.completed}
+                      deleteItem={deleteItem}
+                      changeValue={changeValue}
+                      completedTask={completedTask}
+                      inputError={inputError}
+                      setInputError={setInputError}
+                    />
+                  </Reorder.Item>
+                );
+              })}
+            </AnimatePresence>
           </Reorder.Group>
-          <div className={styles.progressBar}>
-            {items.length > 0 ? (
-              <CircularProgressbar value={valueCompleted} text={`${valueCompleted.toFixed(1)}%`} />
-            ) : null}
-          </div>
+          <AnimatePresence>
+            {items.length > 0 && (
+              <motion.div
+                key="progress"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className={styles.progressBar}
+              >
+                <CircularProgressbar
+                  value={valueCompleted}
+                  text={`${valueCompleted.toFixed(1)}%`}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>
