@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./form.module.scss";
-import TItems from "../../App";
 import { AnimatePresence, motion } from "framer-motion";
 import DateTimePicker from "react-datetime-picker";
 import Toggle from "../toggle/Toggle";

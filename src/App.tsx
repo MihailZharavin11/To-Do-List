@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Cloud from "./components/bgCloud/Cloud";
 import Form from "./components/form/Form";
-import TaskItems, { TTaskItems } from "./components/taskItems/TaskItems";
+import TaskItems from "./components/taskItems/TaskItems";
 import styles from "./main.module.scss";
 import { v4 as uuidv4 } from "uuid";
 import { AnimatePresence, Reorder } from "framer-motion";
@@ -22,6 +22,7 @@ const App = () => {
   const [completed, setCompleted] = useState(0);
   const [error, setError] = useState("");
   const [inputError, setInputError] = useState("");
+  console.log(Number(undefined) > 3);
 
   let valueCompleted = completed ? (completed * 100) / items.length : 0;
 
@@ -38,11 +39,7 @@ const App = () => {
       setError("Поле не может состоять из пробелов");
       return true;
     }
-    if (!!!title.match("^[a-zA-Z0-9]+$")) {
-      setError("Строка не должна содержать специальные символы");
-      return true;
-    }
-    if (Number(date) < new Date().getTime()) {
+    if (date && Number(date) < new Date().getTime()) {
       setError("Выбранная дата не может быть меньше текущего времени");
       return true;
     }
