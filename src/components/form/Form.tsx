@@ -19,11 +19,11 @@ const Form: React.FC<FormProps> = ({
 }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [value, onChange] = useState<Date | undefined>(undefined);
+  const [valueDate, setValueDate] = useState<Date | undefined>(undefined);
   const [showPicker, setShowPicker] = useState(false);
 
   const onClickButton = () => {
-    addTask(title, description, value);
+    addTask(title, description, valueDate);
     setTitle("");
     setDescription("");
   };
@@ -61,7 +61,11 @@ const Form: React.FC<FormProps> = ({
 
       <div className={styles.datePicker}>
         <div className="toogle">
-          <Toggle showPicker={showPicker} setShowPicker={setShowPicker} />
+          <Toggle
+            showPicker={showPicker}
+            setShowPicker={setShowPicker}
+            setValueDate={setValueDate}
+          />
         </div>
         <div className="datePicker__item">
           <AnimatePresence>
@@ -75,8 +79,8 @@ const Form: React.FC<FormProps> = ({
               >
                 <DateTimePicker
                   minDate={new Date()}
-                  onChange={onChange}
-                  value={value}
+                  onChange={setValueDate}
+                  value={valueDate}
                 />
               </motion.div>
             )}

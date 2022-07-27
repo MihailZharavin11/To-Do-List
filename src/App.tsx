@@ -22,7 +22,6 @@ const App = () => {
   const [completed, setCompleted] = useState(0);
   const [error, setError] = useState("");
   const [inputError, setInputError] = useState("");
-  console.log(Number(undefined) > 3);
 
   let valueCompleted = completed ? (completed * 100) / items.length : 0;
 
