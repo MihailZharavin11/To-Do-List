@@ -180,7 +180,11 @@ const TaskItems: React.FC<TTaskItems> = ({
               timeLeft && styles.timeLeft
             }`}
           >
-            {date ? `${day}D${hour}h${minute}m${second}s` : null}
+            {date && (
+              <div className={styles.taskDate}>
+                {day}D {hour}H {minute}M {second}S
+              </div>
+            )}
           </p>
         </div>
       </div>
