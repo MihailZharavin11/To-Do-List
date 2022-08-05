@@ -1,14 +1,15 @@
 export const renderTimeLeft = (
-  date: Date | undefined,
   setDay: (value: React.SetStateAction<number>) => void,
   setHour: (value: React.SetStateAction<number>) => void,
   setMinute: (value: React.SetStateAction<number>) => void,
   setSecond: (value: React.SetStateAction<number>) => void,
-  setTimeLeft: (value: React.SetStateAction<boolean>) => void
+  setTimeLeft: (value: React.SetStateAction<boolean>) => void,
+  date?: Date | string
 ) => {
   if (date) {
     const start = new Date();
-    let interval = date.getTime() - start.getTime();
+    const newDate: Date = new Date(date);
+    let interval = newDate.getTime() - start.getTime();
     if (interval > 0) {
       interval = interval / 1000;
       setDay(Math.round(interval / 60 / 60 / 24));

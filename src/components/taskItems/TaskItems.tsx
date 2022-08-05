@@ -14,7 +14,7 @@ export type TTaskItems = {
   completedTask: (id: string) => void;
   inputError: string;
   setInputError: (value: React.SetStateAction<string>) => void;
-  date?: Date;
+  date?: Date | string;
 };
 
 const TaskItems: React.FC<TTaskItems> = ({
@@ -40,8 +40,10 @@ const TaskItems: React.FC<TTaskItems> = ({
 
   useEffect(() => {
     if (completed) return;
+    if (date) {
+    }
     let interval = setInterval(() => {
-      renderTimeLeft(date, setDay, setHour, setMinute, setSecond, setTimeLeft);
+      renderTimeLeft(setDay, setHour, setMinute, setSecond, setTimeLeft, date);
     }, 1000);
     return () => {
       clearInterval(interval);

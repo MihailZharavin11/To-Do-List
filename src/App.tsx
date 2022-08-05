@@ -13,7 +13,7 @@ export type TItems = {
   id: string;
   title: string;
   description: string;
-  date?: Date;
+  date?: Date | string;
   completed: boolean;
 };
 
@@ -22,8 +22,22 @@ const App = () => {
   const [completed, setCompleted] = useState(0);
   const [error, setError] = useState("");
   const [inputError, setInputError] = useState("");
-
   let valueCompleted = completed ? (completed * 100) / items.length : 0;
+
+  useEffect(() => {
+    const data = localStorage.getItem("toDoItem");
+    if (data) {
+      const localStorageItems: TItems[] = JSON.parse(data);
+      setItems(localStorageItems);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (items.length > 0) {
+      const itemsToLocal = JSON.stringify(items);
+      localStorage.setItem("toDoItem", itemsToLocal);
+    }
+  }, [items]);
 
   const checkOnError = (title: string, description: string, date?: Date) => {
     if (!title || !description) {
