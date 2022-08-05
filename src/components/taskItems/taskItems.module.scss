@@ -11,15 +11,48 @@
       display: flex;
       align-items: center;
       font-size: 30px;
-      h2 {
+      .checkIcons{
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        color:grey;
+      }
+      .checkIcons_completed{
+        color:green;
+      }
+
+      .taskItem__title{
         font-style: normal;
         font-weight: 400;
         font-size: 18px;
         line-height: 29px;
-        color: #3e3b3b;
         margin-left: 24px;
       }
+
+      .taskItem__title_completed{
+        text-decoration-line: line-through;
+        color: #c4c4c4;
+      }
+
     }
+
+    .topRigthSideTask{
+      .pencilIcon{
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        color:green;
+
+      }
+      .trashIcon{
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        color:red;
+        margin: 0px 34px;
+      }
+    }
+
   }
 
   .bottomTask {
