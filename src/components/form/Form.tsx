@@ -26,6 +26,8 @@ const Form: React.FC<FormProps> = ({
     addTask(title, description, valueDate);
     setTitle("");
     setDescription("");
+    setShowPicker(false);
+    setValueDate(undefined);
   };
 
   return (

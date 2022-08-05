@@ -17,6 +17,7 @@ const Toggle: React.FC<TToggleProps> = ({
       <div className="text">Установить дату окончания задачи</div>
       <label className={styles.switch}>
         <input
+          checked={showPicker}
           onChange={() => {
             if (showPicker) {
               setValueDate(undefined);
