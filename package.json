@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.5",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
@@ -11,13 +12,16 @@
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "bootstrap-icons": "^1.9.1",
+    "concurrently": "^7.4.0",
     "framer-motion": "^6.5.1",
+    "json-server": "^0.17.0",
     "react": "^18.2.0",
     "react-calendar": "^3.7.0",
     "react-circular-progressbar": "^2.1.0",
     "react-datetime-picker": "^3.5.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
+    "react-redux": "^8.0.4",
     "react-scripts": "5.0.1",
     "sass": "^1.53.0",
     "typescript": "^4.7.4",
@@ -25,10 +29,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "pusk": "concurrently \"npm run server\" \"npm start\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "json-server -w src/server/db.json -p 3001"
   },
   "eslintConfig": {
     "extends": [

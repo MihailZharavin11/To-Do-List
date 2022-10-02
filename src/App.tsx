@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Cloud from "./components/bgCloud/Cloud";
 import Form from "./components/form/Form";
 import TaskItems from "./components/taskItems/TaskItems";
 import styles from "./main.module.scss";
