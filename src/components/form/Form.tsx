@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import styles from "./form.module.scss";
 import { AnimatePresence, motion } from "framer-motion";
 import DateTimePicker from "react-datetime-picker";
 import Toggle from "../toggle/Toggle";
+import { useAddPostsMutation, useGetPostsQuery } from "../../redux/postsApi";
 
 type FormProps = {
   addTask: (title: string, description: string, date?: Date) => void;
@@ -21,9 +22,13 @@ const Form: React.FC<FormProps> = ({
   const [description, setDescription] = useState("");
   const [valueDate, setValueDate] = useState<Date | undefined>(undefined);
   const [showPicker, setShowPicker] = useState(false);
+  const [addPost] = useAddPostsMutation();
+  const { data = [], isError } = useGetPostsQuery(null);
+  console.log(data);
 
   const onClickButton = () => {
-    addTask(title, description, valueDate);
+    addPost({ title, description, valueDate });
+    // addTask(title, description, valueDate);
     setTitle("");
     setDescription("");
     setShowPicker(false);
